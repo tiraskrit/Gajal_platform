@@ -1,0 +1,50 @@
+/* MainLayout.css */
+
+.main-layout {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    padding: 20px;
+  }
+  
+  .header {
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .app-title {
+    margin: 0;
+  }
+  
+  .nav {
+    margin: 0;
+  }
+  
+  .nav-list {
+    list-style-type: none;
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-item {
+    margin: 0;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  .content {
+    margin-top: 20px;
+  }
+  

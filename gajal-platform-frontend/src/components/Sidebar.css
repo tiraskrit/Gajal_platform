@@ -1,0 +1,29 @@
+.sidebar {
+    background-color: var(--sidebar-background);
+    color: var(--secondary-color);
+    width: 250px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 1rem 0;
+}
+
+.sidebar ul li a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-size: 1.2rem;
+}

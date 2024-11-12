@@ -1,0 +1,9 @@
+gajal-platform-frontend/node_modules/
+gajal-platform-frontend/dist/
+gajal-platform-frontend/.cache/
+gajal-platform-frontend/package-lock.json
+gajal-platform-frontend/public/
+
+
+gajal-platform/config.py
+gajal-platform/__pycache__/

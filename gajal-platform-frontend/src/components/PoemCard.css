@@ -1,0 +1,22 @@
+.poem-card {
+    background-color: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.poem-card h3 {
+    color: var(--primary-color);
+    margin: 0 0 0.5rem;
+}
+
+.poem-card p {
+    margin: 0.5rem 0;
+}
+
+.poem-author {
+    color: var(--accent-color);
+    font-weight: bold;
+    text-align: right;
+}

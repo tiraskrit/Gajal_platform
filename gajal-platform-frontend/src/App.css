@@ -1,0 +1,49 @@
+.App {
+  text-align: center;
+}
+
+input, textarea {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  width: 300px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #ffffff;
+  --background-color: #f0f4f8;
+  --sidebar-background: #2b3a67;
+  --text-color: #333333;
+  --accent-color: #e57373;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+}
