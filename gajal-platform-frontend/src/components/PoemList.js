@@ -1,7 +1,8 @@
 // PoemList.js
 import React, { useEffect, useState } from 'react';
 import PoemCard from './PoemCard';
-import './PoemList.css';
+// import './PoemList.css';
+import './AuthButtons.css'; // Ensure to create this CSS file for styling the buttons
 
 export default function PoemList() {
     const [poems, setPoems] = useState([]);
@@ -19,7 +20,7 @@ export default function PoemList() {
         })
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Unauthorized or no data available');
+                    throw new Error('Please login or signup to see all the poems and submit your own');
                 }
                 return response.json();
             })
@@ -32,7 +33,18 @@ export default function PoemList() {
     }, []);
 
     if (error) {
-        return <div className="error-message">{error}</div>;
+        return (
+            <div className="error-container">
+                <div className="error-message">
+                    <h2>Welcome to Our Poetry Collection</h2>
+                    <p>{error}</p>
+                    <div className="auth-buttons">
+                        <button onClick={() => window.location.href = '/login'} className="login-button">Login</button>
+                        <button onClick={() => window.location.href = '/signup'} className="signup-button">Signup</button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     return (

@@ -15,42 +15,34 @@ const App = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check if a valid token exists and decode it
     const token = localStorage.getItem('token');
     if (token) {
-      try {
-        const decoded = jwtDecode(token);  
-        
-        // Token validity check
-        if (decoded.exp * 1000 > Date.now()) {
-          setIsAuthenticated(true);
-          
-          // Check if the user has an admin role
-          setIsAdmin(decoded.role === 'admin');
-        } else {
-          // Token expired, remove it
-          localStorage.removeItem('token');
-          setIsAuthenticated(false);
-        }
-      } catch (error) {
-        console.error("Error decoding token:", error);
-        localStorage.removeItem('token');
+      const decoded = jwtDecode(token);
+      setIsAuthenticated(true);
+
+      // Check if the user has the admin role
+      if (decoded.role === 'admin') {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
       }
+    } else {
+      setIsAuthenticated(false);
+      setIsAdmin(false);
     }
   }, []);
 
+
   return (
     <Router>
+      <MainLayout isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
       <Routes>
-        <Route path="/" element={<MainLayout isAuthenticated={isAuthenticated} isAdmin={isAdmin} />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={!isAuthenticated ? <Login /> : <Navigate to="/" />} />
-          <Route path="signup" element={!isAuthenticated ? <Signup /> : <Navigate to="/" />} />
-          <Route path="logout" element={<Logout />} />
-          <Route path="poems" element={<PoemList />} />
-          <Route path="submitPoem" element={isAuthenticated ? <SubmitPoem /> : <Navigate to="/login" />} />
-          <Route path="admin-panel" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
-        </Route>
+        <Route path="/" element={<PoemList />} />
+        <Route path="login" element={<Login setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="submitpoem" element={isAuthenticated ? <SubmitPoem /> : <Navigate to="/login" />} />
+        <Route path="logout" element={<Logout setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />} />
+        <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

@@ -7,3 +7,5 @@ gajal-platform-frontend/public/
 
 gajal-platform/config.py
 gajal-platform/__pycache__/
+
+test.py

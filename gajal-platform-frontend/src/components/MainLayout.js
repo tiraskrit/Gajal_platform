@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom'; // Import Link for navigation and Outlet for nested routes
 import './MainLayout.css'; // Import your CSS file for styling
 
-const MainLayout = ({ isAuthenticated }) => {
+const MainLayout = ({ isAuthenticated, isAdmin }) => {
   return (
     <div className="main-layout">
       <header className="header">
-        <h1 className="app-title">Gajal App</h1>
+        <h1 className="app-title"><Link to="/" className="nav-link">Gajal App</Link></h1>
         <nav className="nav">
           <ul className="nav-list">
             {isAuthenticated ? (
@@ -15,13 +15,13 @@ const MainLayout = ({ isAuthenticated }) => {
                   <Link to="/" className="nav-link">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/poems" className="nav-link">View Gajals</Link>
-                </li>
-                <li className="nav-item">
                   <Link to="/submitPoem" className="nav-link">Submit a Gajal</Link>
                 </li>
                 <li className="nav-item">
                   <Link to="/logout" className="nav-link">Logout</Link>
+                </li>
+                <li className="nav-item">
+                {isAdmin && <Link to="/admin" className="nav-link">Admin Panel</Link>}
                 </li>
               </>
             ) : (

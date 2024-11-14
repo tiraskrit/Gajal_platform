@@ -1,6 +1,7 @@
 // src/components/SubmitPoem.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import './SubmitPoem.css';
 
 const SubmitPoem = () => {
   const [title, setTitle] = useState('');
@@ -35,30 +36,38 @@ const SubmitPoem = () => {
       setMessage('Failed to submit poem.');
     }
   };
-  
 
   return (
-    <div>
-      <h2>Submit a Gajal</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
+    <div className="poem-container">
+      <h2 className="title">Submit a Gajal</h2>
+      <form className="poem-form" onSubmit={handleSubmit}>
+        <label className="label" htmlFor="title">Title:</label>
         <input
           type="text"
+          id="title"
+          className="input-field"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          placeholder="Enter the title of your gajal"
         />
-        <label>Content:</label>
+
+        <label className="label" htmlFor="content">Content:</label>
         <textarea
+          id="content"
+          className="textarea-field"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
+          placeholder="Write your gajal here..."
         ></textarea>
-        <button type="submit">Submit Poem</button>
+
+        <button type="submit" className="submit-button">Submit Gajal</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
   );
 };
 
 export default SubmitPoem;
+
