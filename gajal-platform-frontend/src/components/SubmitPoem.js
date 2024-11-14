@@ -1,4 +1,3 @@
-// src/components/SubmitPoem.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './SubmitPoem.css';
@@ -32,7 +31,7 @@ const SubmitPoem = () => {
       setTitle('');
       setContent('');
     } catch (error) {
-      console.error(error.response);  // This will log the error message from the backend
+      console.error(error.response);
       setMessage('Failed to submit poem.');
     }
   };
@@ -70,4 +69,3 @@ const SubmitPoem = () => {
 };
 
 export default SubmitPoem;
-

@@ -1,7 +1,7 @@
 // PoemList.js
 import React, { useEffect, useState } from 'react';
-import PoemCard from './PoemCard';
-// import './PoemList.css';
+import PoemCard from './PoemCard'; // Assuming PoemCard displays the title and author
+import PoemDisplay from './PoemDisplay'; // Import PoemDisplay to handle newline conversion
 import './AuthButtons.css'; // Ensure to create this CSS file for styling the buttons
 
 export default function PoemList() {
@@ -50,12 +50,14 @@ export default function PoemList() {
     return (
         <div className="poem-list">
             {Array.isArray(poems) ? poems.map((poem) => (
-                <PoemCard
-                    key={poem.title}
-                    title={poem.title}
-                    content={poem.content}
-                    author={poem.author_id}
-                />
+                <div key={poem._id} className="poem-card">
+                    <PoemCard
+                        title={poem.title}
+                        author={poem.author_id}
+                    />
+                    {/* Use PoemDisplay to render the content with newlines */}
+                    <PoemDisplay poemContent={poem.content} />
+                </div>
             )) : <div>No poems available.</div>}
         </div>
     );
