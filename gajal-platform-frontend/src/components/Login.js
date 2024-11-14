@@ -4,13 +4,11 @@ import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import './Login.css';
 
-const Login = () => {
+const Login = ({ setIsAuthenticated, setIsAdmin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();

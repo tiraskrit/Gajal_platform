@@ -8,28 +8,30 @@ import PoemList from './components/PoemList';
 import SubmitPoem from './components/SubmitPoem';
 import Logout from './components/Logout';
 import AdminPanel from './components/AdminPanel';
-import Home from './components/Home';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decoded = jwtDecode(token);
-      setIsAuthenticated(true);
-
-      // Check if the user has the admin role
-      if (decoded.role === 'admin') {
-        setIsAdmin(true);
+    const checkAuthStatus = () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const decoded = jwtDecode(token);
+        setIsAuthenticated(true);
+        setIsAdmin(decoded.role === 'admin');
       } else {
+        setIsAuthenticated(false);
         setIsAdmin(false);
       }
-    } else {
-      setIsAuthenticated(false);
-      setIsAdmin(false);
-    }
+    };
+
+    checkAuthStatus();
+    window.addEventListener('storage', checkAuthStatus); // Listen for changes in local storage
+
+    return () => {
+      window.removeEventListener('storage', checkAuthStatus);
+    };
   }, []);
 
 
