@@ -67,7 +67,7 @@ const AdminPanel = () => {
           ))}
         </div>
       ) : (
-        <p>No pending poems at the moment.</p>
+        <p className='text-no-pending'>Hurra! No pending poems at the moment.</p>
       )}
     </div>
   );

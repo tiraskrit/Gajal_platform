@@ -2,11 +2,14 @@
     margin-top: 20px;
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .error-container {
     display: flex;
-    padding-left: 30px
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .login-button, .signup-button {
@@ -29,4 +32,5 @@
 
 .login-button:hover, .signup-button:hover {
     opacity: 0.9;
+    background-color: #0056b3;
 }
