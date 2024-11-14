@@ -12,9 +12,6 @@ const MainLayout = ({ isAuthenticated, isAdmin }) => {
             {isAuthenticated ? (
               <>
                 <li className="nav-item">
-                  <Link to="/" className="nav-link">Home</Link>
-                </li>
-                <li className="nav-item">
                   <Link to="/submitPoem" className="nav-link">Submit a Gajal</Link>
                 </li>
                 <li className="nav-item">
