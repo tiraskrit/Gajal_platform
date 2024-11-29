@@ -112,5 +112,5 @@ def review_poem(poem_id):
         return jsonify({"error": "Poem not found or already reviewed"}), 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
     
