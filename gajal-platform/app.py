@@ -6,17 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_cors import CORS
 from functools import wraps
 from bson import ObjectId 
-import socks
-import socket
-import dns.resolver
 
-# Configure http proxy for MongoDB traffic
-socks.set_default_proxy(socks.HTTP, "10.1.2.95", 8080)
-socket.socket = socks.socksocket
-
-# Use dnspython for DNS resolution (using Cloudflare's public DNS server)
-resolver = dns.resolver.Resolver()
-resolver.nameservers = ['1.1.1.1']  # Cloudflare's public DNS
 
 app = Flask(__name__)
 
