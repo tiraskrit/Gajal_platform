@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PoemCard from './PoemCard';
 // import './PoemList.css';
 import './AuthButtons.css'; // Ensure to create this CSS file for styling the buttons
+import { API_URL } from '../api.js';
 
 export default function PoemList() {
     const [poems, setPoems] = useState([]);
@@ -12,7 +13,7 @@ export default function PoemList() {
         // Assuming the token is stored in localStorage
         const token = localStorage.getItem('token');
 
-        fetch('http://127.0.0.1:5000/api/poems', {
+        fetch(`${API_URL}/api/poems`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

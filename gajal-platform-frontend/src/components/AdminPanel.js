@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AdminPanel.css'; // Importing custom CSS for styling
+import { API_URL } from '../api';
 
 const AdminPanel = () => {
   const [pendingPoems, setPendingPoems] = useState([]);
@@ -11,7 +12,7 @@ const AdminPanel = () => {
     const fetchPendingPoems = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/api/admin/poems', {
+        const response = await axios.get(`${API_URL}/api/admin/poems`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setPendingPoems(response.data);
@@ -27,7 +28,7 @@ const AdminPanel = () => {
   const handleReview = async (poemId, action) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`http://127.0.0.1:5000/api/admin/poems/${poemId}`, { action }, {
+      await axios.patch(`${API_URL}/api/admin/poems/${poemId}`, { action }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPendingPoems((prev) => prev.filter((poem) => poem._id !== poemId));

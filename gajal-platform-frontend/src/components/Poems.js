@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../api.js';
 
 const Poems = () => {
   const [poems, setPoems] = useState([]);
@@ -12,7 +13,7 @@ const Poems = () => {
     const fetchPoems = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://127.0.0.1:5000/api/poems', {
+        const response = await axios.get(`${API_URL}/api/poems`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

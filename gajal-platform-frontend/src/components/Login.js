@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
 import './Login.css';
+import { API_URL } from '../api.js';
 
 const Login = ({ setIsAuthenticated, setIsAdmin }) => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const Login = ({ setIsAuthenticated, setIsAdmin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password });
       const token = response.data.access_token;
       
       // Store the token in localStorage

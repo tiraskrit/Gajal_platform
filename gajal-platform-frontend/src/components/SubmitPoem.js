@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './SubmitPoem.css';
+import { API_URL } from '../api.js';
 
 const SubmitPoem = () => {
   const [title, setTitle] = useState('');
@@ -12,7 +13,7 @@ const SubmitPoem = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://127.0.0.1:5000/api/submitPoem',
+        `${API_URL}/api/submitPoem`,
         { 
           title,         // Title of the poem
           content,       // Content of the poem

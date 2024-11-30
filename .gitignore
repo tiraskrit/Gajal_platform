@@ -3,7 +3,7 @@ gajal-platform-frontend/dist/
 gajal-platform-frontend/.cache/
 gajal-platform-frontend/package-lock.json
 
-gajal-platform/config.py
+gajal-platform/.env
 gajal-platform/__pycache__/
 
 test.py
