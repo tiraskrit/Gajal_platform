@@ -1,108 +1,168 @@
-.admin-panel {
-    background-color: inear-gradient(135deg, #74ebd5, #9face6);
-    color: #333;
-    font-family: 'Arial', sans-serif;
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    border-radius: 8px;
-  }
-  
-  .title {
-    font-size: 2rem;
-    color: #3b82f6;
-    text-align: center;
-    margin-bottom: 20px;
-  }
+/* Common poem card styles */
+.poem-list {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  grid-template-columns: 1fr;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
-  .text-no-pending {
-    font-size: 1rem;
-    color: #ff0000;
-    text-align: center;
-    margin-bottom: 20px;
+/* Responsive grid layouts for main poem list */
+@media (min-width: 768px) {
+  .poem-list:not(.admin-panel .poem-list) {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  .loading {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #4b5563;
+}
+
+@media (min-width: 1024px) {
+  .poem-list:not(.admin-panel .poem-list) {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  .error-message {
-    color: #ef4444;
-    font-size: 1.2rem;
-    text-align: center;
+}
+
+@media (min-width: 1200px) {
+  .poem-list:not(.admin-panel .poem-list) {
+    grid-template-columns: repeat(4, 1fr);
   }
-  
-  .poem-list {
-    display: grid;
-    gap: 50px;
-    margin-top: 20px;
-  }
-  
-  .poem-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-    width: auto;
-    max-width: 90%;
-    min-width: 40%;
-    margin: 0 auto;
-  }
-  
-  .poem-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .poem-title {
-    font-size: 1.5rem;
-    color: #1d4ed8;
-  }
-  
-  .poem-content {
-    font-size: 1rem;
-    color: #6b7280;
-    margin: 10px 0;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-  }
-  
-  .approve-btn {
-    background-color: #10b981;
-    color: white;
-  }
-  
-  .approve-btn:hover {
-    background-color: #059669;
-  }
-  
-  .reject-btn {
-    background-color: #ef4444;
-    color: white;
-  }
-  
-  .reject-btn:hover {
-    background-color: #dc2626;
-  }
-  
-  @media (max-width: 768px) {
-    .poem-list {
-      grid-template-columns: 1fr;
-    }
-  }
-  
+}
+
+/* Main poem list card styles */
+.poem-card:not(.admin-panel .poem-card) {
+  background-color: var(--secondary-color, #f8f9fa);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 300px;
+  overflow: hidden;
+}
+
+.poem-card:not(.admin-panel .poem-card).expanded {
+  height: auto;
+  grid-column: 1 / -1;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Admin panel specific styles */
+.admin-panel {
+  background: linear-gradient(135deg, #74ebd5, #9face6);
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 1200px;
+  border-radius: 8px;
+}
+
+.admin-panel .poem-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 50px;
+  margin-top: 20px;
+}
+
+.admin-panel .poem-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  width: auto;
+  max-width: 90%;
+  min-width: 40%;
+  margin: 0 auto;
+  height: auto;
+}
+
+.admin-panel .poem-card:hover {
+  transform: translateY(-5px);
+}
+
+.admin-panel .poem-title {
+  font-size: 1.5rem;
+  color: #1d4ed8;
+  margin-bottom: 1rem;
+}
+
+.admin-panel .poem-content {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 10px 0;
+  white-space: pre-line;
+}
+
+.admin-panel .action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.admin-panel button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.admin-panel .approve-btn {
+  background-color: #10b981;
+  color: white;
+}
+
+.admin-panel .approve-btn:hover {
+  background-color: #059669;
+}
+
+.admin-panel .reject-btn {
+  background-color: #ef4444;
+  color: white;
+}
+
+.admin-panel .reject-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Other admin panel styles */
+.admin-panel .title {
+  font-size: 2rem;
+  color: #3b82f6;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-panel .text-no-pending {
+  font-size: 1rem;
+  color: #ff0000;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-panel .loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #4b5563;
+}
+
+.admin-panel .error-message {
+  color: #ef4444;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Common styles */
+.poem-inner {
+  padding: 1.5rem;
+}
+
+.poem-author {
+  color: var(--accent-color, #718096);
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+  font-style: italic;
+}
