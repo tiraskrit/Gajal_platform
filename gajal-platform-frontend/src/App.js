@@ -8,6 +8,8 @@ import PoemList from './components/PoemList';
 import SubmitPoem from './components/SubmitPoem';
 import Logout from './components/Logout';
 import AdminPanel from './components/AdminPanel';
+import ResetPassword from './components/ResetPassword';
+import VerifyEmail from './components/VerifyEmail';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -45,6 +47,8 @@ const App = () => {
         <Route path="submitpoem" element={isAuthenticated ? <SubmitPoem /> : <Navigate to="/login" />} />
         <Route path="logout" element={<Logout setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />} />
         <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </Router>
   );
