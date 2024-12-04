@@ -3,7 +3,7 @@ import { MailCheck } from 'lucide-react';
 
 const VerificationRequired = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-200 to-indigo-300 pt-16 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-200 to-indigo-300 flex items-start justify-center pt-16 px-4">
       <div className="max-w-md mx-auto bg-white/90 backdrop-blur rounded-lg shadow-xl p-6">
         <div className="flex flex-col items-center space-y-4 pb-6">
           <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
