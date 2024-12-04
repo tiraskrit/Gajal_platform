@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Outlet } from 'react-router-dom'; // Import Link for navigation and Outlet for nested routes
 import './MainLayout.css'; // Import your CSS file for styling
 
-const MainLayout = ({ isAuthenticated, isAdmin }) => {
+const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
   return (
     <div className="main-layout">
       <header className="header">
@@ -11,15 +11,19 @@ const MainLayout = ({ isAuthenticated, isAdmin }) => {
           <ul className="nav-list">
             {isAuthenticated ? (
               <>
-                <li className="nav-item">
-                  <Link to="/submitPoem" className="nav-link">Submit a Gajal</Link>
-                </li>
+                {isVerified && (
+                  <li className="nav-item">
+                    <Link to="/submitPoem" className="nav-link">Submit a Gajal</Link>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link to="/logout" className="nav-link">Logout</Link>
                 </li>
-                <li className="nav-item">
-                {isAdmin && <Link to="/admin" className="nav-link">Admin Panel</Link>}
-                </li>
+                {isAdmin && (
+                  <li className="nav-item">
+                    <Link to="/admin" className="nav-link">Admin Panel</Link>
+                  </li>
+                )}
               </>
             ) : (
               <>

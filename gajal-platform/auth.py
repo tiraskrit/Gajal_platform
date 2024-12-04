@@ -28,12 +28,21 @@ def login():
         else:
             expires_delta = timedelta(days=1)
         
+        # Include is_verified status in the token
         access_token = create_access_token(
             identity=user['email'],
-            additional_claims={"role": user['role']},
+            additional_claims={
+                "role": user['role'],
+                "is_verified": user.get('is_verified', False)  # Get is_verified status with False as default
+            },
             expires_delta=expires_delta
         )
-        return jsonify(access_token=access_token), 200
+        
+        # Return verification status in response for immediate UI feedback
+        return jsonify({
+            "access_token": access_token,
+            "is_verified": user.get('is_verified', False)
+        }), 200
 
     return jsonify({"error": "Invalid email or password"}), 401
 

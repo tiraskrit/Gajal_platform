@@ -17,7 +17,9 @@ const SignUp = () => {
         email,
         password
       });
-      navigate('/login');  // Redirect to login page after successful sign up
+      setError('');
+      alert('Account created successfully! Please check your email to verify your account.');
+      navigate('/login');
     } catch (error) {
       setError('Sign up failed. Please try again.');
     }

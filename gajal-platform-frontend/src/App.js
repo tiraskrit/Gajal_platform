@@ -14,6 +14,7 @@ import VerifyEmail from './components/VerifyEmail';
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     const checkAuthStatus = () => {
@@ -22,9 +23,11 @@ const App = () => {
         const decoded = jwtDecode(token);
         setIsAuthenticated(true);
         setIsAdmin(decoded.role === 'admin');
+        setIsVerified(decoded.is_verified === true);
       } else {
         setIsAuthenticated(false);
         setIsAdmin(false);
+        setIsVerified(false);
       }
     };
 
@@ -39,17 +42,37 @@ const App = () => {
 
   return (
     <Router>
-      <MainLayout isAuthenticated={isAuthenticated} isAdmin={isAdmin} />
-      <Routes>
-        <Route path="/" element={<PoemList />} />
-        <Route path="login" element={<Login setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />} />
-        <Route path="signup" element={<Signup />} />
-        <Route path="submitpoem" element={isAuthenticated ? <SubmitPoem /> : <Navigate to="/login" />} />
-        <Route path="logout" element={<Logout setIsAuthenticated={setIsAuthenticated} setIsAdmin={setIsAdmin} />} />
-        <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-      </Routes>
+      <MainLayout isAuthenticated={isAuthenticated} isAdmin={isAdmin} isVerified={isVerified} />
+        <Routes>
+          <Route path="/" element={
+            isAuthenticated && !isVerified ? 
+              <VerificationRequired /> : 
+              <PoemList />
+          } />
+          <Route path="login" element={
+            <Login 
+              setIsAuthenticated={setIsAuthenticated} 
+              setIsAdmin={setIsAdmin}
+              setIsVerified={setIsVerified}
+            />
+          } />
+          <Route path="signup" element={<Signup />} />
+          <Route path="submitpoem" element={
+            !isAuthenticated ? <Navigate to="/login" /> :
+            !isVerified ? <VerificationRequired /> :
+            <SubmitPoem />
+          } />
+          <Route path="logout" element={
+            <Logout 
+              setIsAuthenticated={setIsAuthenticated} 
+              setIsAdmin={setIsAdmin}
+              setIsVerified={setIsVerified}
+            />
+          } />
+          <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+        </Routes>
     </Router>
   );
 };

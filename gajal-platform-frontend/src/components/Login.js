@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import './Login.css';
 import { API_URL } from '../api.js';
 
-const Login = ({ setIsAuthenticated, setIsAdmin }) => {
+const Login = ({ setIsAuthenticated, setIsAdmin, setIsVerified }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -35,6 +35,7 @@ const Login = ({ setIsAuthenticated, setIsAdmin }) => {
   
       const decoded = jwtDecode(token);
       setIsAuthenticated(true);
+      setIsVerified(decoded.is_verified === true);
       if (decoded.role === 'admin') {
         setIsAdmin(true);
       }
