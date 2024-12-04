@@ -23,7 +23,11 @@ def login():
 
     if user and check_password_hash(user["password"], password):
         # Set token expiration based on remember me
-        expires_delta = timedelta(days=30 if remember_me else 1)
+        if remember_me:
+            expires_delta = timedelta(days=30)
+        else:
+            expires_delta = timedelta(days=1)
+        
         access_token = create_access_token(
             identity=user['email'],
             additional_claims={"role": user['role']},
