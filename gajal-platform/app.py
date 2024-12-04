@@ -117,7 +117,7 @@ def review_poem(poem_id):
 def ping_self():
     # workaround for free render hosting
     try:
-        response = requests.get("https://gajal.onrender.com")
+        response = requests.get("https://gajal.onrender.com/api/poems")
         if response.status_code == 200:
             print("Ping successful.")
         else:
