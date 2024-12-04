@@ -1,0 +1,54 @@
+body {
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .verification-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 90%;
+    padding: 20px;
+    margin: 40px auto 0;
+  }
+  
+  .verification-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .icon-container {
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    background: #e6f0ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 24px;
+  }
+  
+  .message {
+    color: #4b5563;
+    margin-bottom: 16px;
+  }
+  
+  .spam-notice {
+    font-size: 14px;
+    color: #6b7280;
+    font-style: italic;
+  }
