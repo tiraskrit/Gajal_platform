@@ -7,6 +7,9 @@ from flask_cors import CORS
 from functools import wraps
 from bson import ObjectId 
 
+from apscheduler.schedulers.background import BackgroundScheduler
+import requests
+
 
 app = Flask(__name__)
 
@@ -111,6 +114,19 @@ def review_poem(poem_id):
     else:
         return jsonify({"error": "Poem not found or already reviewed"}), 404
 
+def ping_self():
+    # workaround for free render hosting
+    try:
+        response = requests.get("https://gajal.onrender.com")
+        if response.status_code == 200:
+            print("Ping successful.")
+        else:
+            print("Ping failed with status:", response.status_code)
+    except Exception as e:
+        print("Ping error:", e)
+
 if __name__ == '__main__':
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(ping_self, 'interval', minutes=14)
+    scheduler.start()
     app.run()
-    
