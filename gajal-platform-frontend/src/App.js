@@ -10,6 +10,7 @@ import Logout from './components/Logout';
 import AdminPanel from './components/AdminPanel';
 import ResetPassword from './components/ResetPassword';
 import VerifyEmail from './components/VerifyEmail';
+import VerificationRequired from './components/VerificationRequired'
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
