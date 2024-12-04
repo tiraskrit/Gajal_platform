@@ -8,3 +8,5 @@ const VerificationRequired = () => {
       </div>
     );
   };
+
+  export default VerificationRequired;
