@@ -17,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     const checkAuthStatus = () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       if (token) {
         const decoded = jwtDecode(token);
         setIsAuthenticated(true);

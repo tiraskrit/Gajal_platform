@@ -27,8 +27,10 @@ const Login = ({ setIsAuthenticated, setIsAdmin }) => {
       // Store the token based on remember me preference
       if (rememberMe) {
         localStorage.setItem('token', token);
+        sessionStorage.removeItem('token'); // Clear any existing session token
       } else {
         sessionStorage.setItem('token', token);
+        localStorage.removeItem('token'); // Clear any existing remembered token
       }
   
       const decoded = jwtDecode(token);

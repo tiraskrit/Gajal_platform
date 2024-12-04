@@ -11,7 +11,7 @@ export default function PoemList() {
 
     useEffect(() => {
         // Assuming the token is stored in localStorage
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
         fetch(`${API_URL}/api/poems`, {
             headers: {

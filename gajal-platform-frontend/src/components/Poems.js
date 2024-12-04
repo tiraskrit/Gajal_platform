@@ -12,7 +12,7 @@ const Poems = () => {
   useEffect(() => {
     const fetchPoems = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         const response = await axios.get(`${API_URL}/api/poems`, {
           headers: { Authorization: `Bearer ${token}` },
         });

@@ -11,7 +11,7 @@ const AdminPanel = () => {
   useEffect(() => {
     const fetchPendingPoems = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
         const response = await axios.get(`${API_URL}/api/admin/poems`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -27,7 +27,7 @@ const AdminPanel = () => {
 
   const handleReview = async (poemId, action) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       await axios.patch(`${API_URL}/api/admin/poems/${poemId}`, { action }, {
         headers: { Authorization: `Bearer ${token}` }
       });

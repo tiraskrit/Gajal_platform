@@ -11,7 +11,7 @@ const SubmitPoem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       const response = await axios.post(
         `${API_URL}/api/submitPoem`,
         { 
