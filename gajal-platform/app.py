@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Flask, jsonify, request
 from extensions import mongo, jwt  # Import extensions
 import config
@@ -6,9 +7,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_cors import CORS
 from functools import wraps
 from bson import ObjectId 
-
-from apscheduler.schedulers.background import BackgroundScheduler
-import requests
 
 
 app = Flask(__name__)
@@ -114,27 +112,12 @@ def review_poem(poem_id):
     else:
         return jsonify({"error": "Poem not found or already reviewed"}), 404
 
-# Define a lightweight ping endpoint
 @app.route('/ping', methods=['GET'])
 def ping():
-    return jsonify({"status": "alive"}), 200
-
-def ping_self():
-    try:
-        response = requests.get("https://gajal.onrender.com/ping", timeout=5)
-        if response.status_code == 200:
-            print("Ping successful.")
-        else:
-            print(f"Ping failed with status: {response.status_code}")
-    except requests.exceptions.RequestException as e:
-        print(f"Ping error: {e}")
-
+    return jsonify({
+        "status": "alive",
+        "timestamp": datetime.utcnow().isoformat()
+    }), 200
 
 if __name__ == '__main__':
-    scheduler = BackgroundScheduler()
-    scheduler.add_job(ping_self, 'interval', minutes=10)
-    scheduler.start()
-    try:
-        app.run()
-    except (KeyboardInterrupt, SystemExit):
-        scheduler.shutdown()
+    app.run()
