@@ -1,66 +1,70 @@
 body {
-    background: linear-gradient(135deg, #89f7fe, #66a6ff);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* display: flex; */
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-  }
-  
-  .logout-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 90%;
-    padding: 20px;
-  }
-  
-  .logout-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  .logout-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .logout-button {
-    background-color: #66a6ff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .logout-button:hover {
-    background-color: #5a93e6;
-  }
-  
-.logout-button,
-.cancel-button {
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.logout-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  padding: 20px;
+}
+
+.logout-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.logout-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.logout-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* Adds space between the buttons */
+  margin-top: 20px; /* Spacing from the title */
+}
+
+.logout-button {
+  background-color: #ff4d4d; /* Red for logout */
+  border: none;
+  border-radius: 5px;
   padding: 10px 20px;
-  font-size: 1rem;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #e64545; /* Darker red on hover */
+}
+
+.cancel-button {
+  background-color: #4caf50; /* Green for cancel */
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .cancel-button:hover {
-  background-color: #31b0d5;
-}
-
-.cancel-button {
-  background-color: #5bc0de;
-  color: white;
+  background-color: #45a049; /* Darker green on hover */
 }
