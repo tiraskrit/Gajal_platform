@@ -34,8 +34,8 @@ body {
 
 .logout-buttons {
   display: flex;
-  justify-content: space-between;
-  gap: 15px; /* Adds space between the buttons */
+  justify-content: center;
+  gap: 35px;
   margin-top: 20px; /* Spacing from the title */
 }
 
