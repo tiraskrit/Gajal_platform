@@ -114,19 +114,27 @@ def review_poem(poem_id):
     else:
         return jsonify({"error": "Poem not found or already reviewed"}), 404
 
+# Define a lightweight ping endpoint
+@app.route('/ping', methods=['GET'])
+def ping():
+    return jsonify({"status": "alive"}), 200
+
 def ping_self():
-    # workaround for free render hosting
     try:
-        response = requests.get("https://gajal.onrender.com/api/poems")
+        response = requests.get("https://gajal.onrender.com/ping", timeout=5)
         if response.status_code == 200:
             print("Ping successful.")
         else:
-            print("Ping failed with status:", response.status_code)
-    except Exception as e:
-        print("Ping error:", e)
+            print(f"Ping failed with status: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Ping error: {e}")
+
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
-    scheduler.add_job(ping_self, 'interval', minutes=14)
+    scheduler.add_job(ping_self, 'interval', minutes=10)
     scheduler.start()
-    app.run()
+    try:
+        app.run()
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
