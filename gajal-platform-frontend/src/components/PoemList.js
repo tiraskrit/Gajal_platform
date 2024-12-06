@@ -1,8 +1,6 @@
-// PoemList.js
 import React, { useEffect, useState } from 'react';
 import PoemCard from './PoemCard';
-// import './PoemList.css';
-import './AuthButtons.css'; // Ensure to create this CSS file for styling the buttons
+import './AuthButtons.css';
 import { API_URL } from '../api.js';
 
 export default function PoemList() {
@@ -56,8 +54,9 @@ export default function PoemList() {
                     title={poem.title}
                     content={poem.content}
                     author={poem.author_id}
+                    contentType={poem.content_type}
                 />
-            )) : <div>No poems available.</div>}
+            )) : <div>No content available.</div>}
         </div>
     );
 }

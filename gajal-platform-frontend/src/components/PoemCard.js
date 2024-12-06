@@ -1,11 +1,17 @@
+import React, { useState } from 'react';
 import './PoemCard.css';
 
-import React, { useState } from 'react';
+const typeColors = {
+  Poem: '#4a90e2',
+  Story: '#9b59b6',
+  Gajal: '#2ecc71',
+  Nibandha: '#e67e22',
+  Other: '#95a5a6'
+};
 
-const PoemCard = ({ title, content, author }) => {
+const PoemCard = ({ title, content, author, contentType }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Helper function to create preview content
   const createPreview = (text) => {
     const lines = text.split('\n').slice(0, 4);
     return lines.join('\n') + (text.split('\n').length > 4 ? '...' : '');
@@ -17,6 +23,12 @@ const PoemCard = ({ title, content, author }) => {
       onClick={() => setIsExpanded(!isExpanded)}
     >
       <div className="poem-inner">
+        <span 
+          className="content-type-badge"
+          style={{ backgroundColor: typeColors[contentType] }}
+        >
+          {contentType}
+        </span>
         <h3 className="poem-title">{title}</h3>
         <div className="poem-content">
           {isExpanded ? (

@@ -34,7 +34,7 @@ const Poems = () => {
     <div>
       <h2>Approved Poems</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <button onClick={handleSubmitPoemClick}>Submit a Gajal</button>
+      <button onClick={handleSubmitPoemClick}>Submit a Content</button>
       <ul>
         {poems.map((poem, index) => (
           <li key={index}>

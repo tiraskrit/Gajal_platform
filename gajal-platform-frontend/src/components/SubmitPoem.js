@@ -6,7 +6,10 @@ import { API_URL } from '../api.js';
 const SubmitPoem = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [contentType, setContentType] = useState('Poem');
   const [message, setMessage] = useState('');
+
+  const contentTypes = ['Poem', 'Story', 'Gajal', 'Nibandha', 'Other'];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +18,11 @@ const SubmitPoem = () => {
       const response = await axios.post(
         `${API_URL}/api/submitPoem`,
         { 
-          title,         // Title of the poem
-          content,       // Content of the poem
-          author_id: localStorage.getItem('user_email'), // Author's email stored in local storage
-          status: "pending" // Status set to pending by default
+          title,
+          content,
+          content_type: contentType,
+          author_id: localStorage.getItem('user_email'),
+          status: "pending"
         },
         { 
           headers: { 
@@ -27,20 +31,32 @@ const SubmitPoem = () => {
           }
         }
       );
-      console.log(response.data);
-      setMessage('Poem submitted successfully. Awaiting approval.');
+      setMessage('Content submitted successfully. Awaiting approval.');
       setTitle('');
       setContent('');
+      setContentType('Poem');
     } catch (error) {
-      console.error(error.response);
-      setMessage('Failed to submit poem.');
+      setMessage('Failed to submit content.');
     }
   };
 
   return (
     <div className="poem-container">
-      <h2 className="title">Submit a Gajal</h2>
+      <h2 className="title">Submit Content</h2>
       <form className="poem-form" onSubmit={handleSubmit}>
+        <label className="label" htmlFor="type">Type:</label>
+        <select
+          id="type"
+          className="input-field"
+          value={contentType}
+          onChange={(e) => setContentType(e.target.value)}
+          required
+        >
+          {contentTypes.map(type => (
+            <option key={type} value={type}>{type}</option>
+          ))}
+        </select>
+
         <label className="label" htmlFor="title">Title:</label>
         <input
           type="text"
@@ -49,7 +65,7 @@ const SubmitPoem = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          placeholder="Enter the title of your gajal"
+          placeholder="Enter the title"
         />
 
         <label className="label" htmlFor="content">Content:</label>
@@ -59,10 +75,10 @@ const SubmitPoem = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
-          placeholder="Write your gajal here..."
+          placeholder="Write your content here..."
         ></textarea>
 
-        <button type="submit" className="submit-button">Submit Gajal</button>
+        <button type="submit" className="submit-button">Submit</button>
       </form>
       {message && <p className="message">{message}</p>}
     </div>

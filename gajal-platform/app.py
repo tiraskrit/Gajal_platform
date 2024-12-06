@@ -32,7 +32,7 @@ app.register_blueprint(auth_bp)
 # Add a default route for testing
 @app.route('/')
 def index():
-    return "Welcome to the Gajal Platform API!"
+    return "Welcome to the Sahitya Platform API!"
 
 # Route to get approved poems
 @app.route('/api/poems', methods=['GET'])
@@ -42,7 +42,7 @@ def get_poems():
     poems = mongo.db.poems.find({"status": "approved"})
     
     # Format poems for response
-    poem_list = [{"title": poem["title"], "content": poem["content"], "author_id": poem["author_id"]} for poem in poems]
+    poem_list = [{"title": poem["title"], "content": poem["content"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
     
     return jsonify(poem_list), 200
 
@@ -59,6 +59,7 @@ def submit_poem():
 
     title = data.get('title')
     content = data.get('content')
+    content_type = data.get('content_type')
     author_id = get_jwt_identity()  # Author ID comes from JWT token; it should be the user's email
     status = "pending"  # Default status for new submissions
 
@@ -70,6 +71,7 @@ def submit_poem():
     mongo.db.poems.insert_one({
         "title": title,
         "content": content,
+        "content_type":content_type,
         "author_id": author_id,  # Using the author's email from JWT
         "status": status          # Status for new poems
     })
@@ -94,7 +96,7 @@ def admin_required(fn):
 @admin_required
 def get_pending_poems():
     pending_poems = poems_collection.find({"status": "pending"})
-    return jsonify([{"_id": str(poem["_id"]), "title": poem["title"], "content": poem["content"]} for poem in pending_poems]), 200
+    return jsonify([{"_id": str(poem["_id"]), "title": poem["title"], "content": poem["content"], "content_type": poem["content_type"]} for poem in pending_poems]), 200
 
 @app.route('/api/admin/poems/<poem_id>', methods=['PATCH'])
 @jwt_required()

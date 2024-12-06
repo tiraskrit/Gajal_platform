@@ -6,14 +6,14 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
   return (
     <div className="main-layout">
       <header className="header">
-        <h1 className="app-title"><Link to="/" className="nav-link">Gajal App</Link></h1>
+        <h1 className="app-title"><Link to="/" className="nav-link">Sahitya App</Link></h1>
         <nav className="nav">
           <ul className="nav-list">
             {isAuthenticated ? (
               <>
                 {isVerified && (
                   <li className="nav-item">
-                    <Link to="/submitPoem" className="nav-link">Submit a Gajal</Link>
+                    <Link to="/submitPoem" className="nav-link">Submit a Content</Link>
                   </li>
                 )}
                 <li className="nav-item">
