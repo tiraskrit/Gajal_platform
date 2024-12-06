@@ -14,7 +14,29 @@ const PoemCard = ({ title, content, author, contentType }) => {
 
   const createPreview = (text) => {
     const lines = text.split('\n').slice(0, 4);
-    return lines.join('\n') + (text.split('\n').length > 4 ? '...' : '');
+    let wordCount = 0;
+    let previewText = '';
+
+    for (let line of lines) {
+        const words = line.split(/\s+/);
+        for (let word of words) {
+            if (wordCount >= 25) {
+                break;
+            }
+            if (previewText) {
+                previewText += ' ';
+            }
+            previewText += word;
+            wordCount++;
+        }
+        if (wordCount >= 25) {
+            break;
+        }
+        previewText += '\n';
+    }
+
+    const ellipsis = text.split(/\s+/).length > 25 ? '...' : '';
+    return previewText.trim() + ellipsis;
   };
 
   return (
