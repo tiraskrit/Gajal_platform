@@ -40,40 +40,43 @@ const App = () => {
     };
   }, []);
 
-
   return (
     <Router>
-      <MainLayout isAuthenticated={isAuthenticated} isAdmin={isAdmin} isVerified={isVerified} />
-        <Routes>
-          <Route path="/" element={
-            isAuthenticated && !isVerified ? 
-              <VerificationRequired /> : 
-              <PoemList />
-          } />
-          <Route path="login" element={
-            <Login 
-              setIsAuthenticated={setIsAuthenticated} 
-              setIsAdmin={setIsAdmin}
-              setIsVerified={setIsVerified}
-            />
-          } />
-          <Route path="signup" element={<Signup />} />
-          <Route path="submitpoem" element={
-            !isAuthenticated ? <Navigate to="/login" /> :
-            !isVerified ? <VerificationRequired /> :
-            <SubmitPoem />
-          } />
-          <Route path="logout" element={
-            <Logout 
-              setIsAuthenticated={setIsAuthenticated} 
-              setIsAdmin={setIsAdmin}
-              setIsVerified={setIsVerified}
-            />
-          } />
-          <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-        </Routes>
+      <MainLayout 
+        isAuthenticated={isAuthenticated} 
+        isAdmin={isAdmin} 
+        isVerified={isVerified} 
+      />
+      <Routes>
+        <Route path="/" element={
+          isAuthenticated && !isVerified ? 
+            <VerificationRequired /> : 
+            <PoemList />
+        } />
+        <Route path="login" element={
+          <Login 
+            setIsAuthenticated={setIsAuthenticated} 
+            setIsAdmin={setIsAdmin}
+            setIsVerified={setIsVerified}
+          />
+        } />
+        <Route path="signup" element={<Signup />} />
+        <Route path="submitpoem" element={
+          !isAuthenticated ? <Navigate to="/login" /> :
+          !isVerified ? <VerificationRequired /> :
+          <SubmitPoem />
+        } />
+        <Route path="logout" element={
+          <Logout 
+            setIsAuthenticated={setIsAuthenticated} 
+            setIsAdmin={setIsAdmin}
+            setIsVerified={setIsVerified}
+          />
+        } />
+        <Route path="admin" element={isAdmin ? <AdminPanel /> : <Navigate to="/" />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
+      </Routes>
     </Router>
   );
 };

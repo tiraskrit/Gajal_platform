@@ -1,4 +1,3 @@
-/* MainLayout.css */
 
 .main-layout {
     font-family: Arial, sans-serif;
@@ -46,5 +45,45 @@
   
   .content {
     margin-top: 20px;
+  }
+  
+  .nav-list {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .hamburger-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .mobile-menu {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #4a90e2;
+    width: 200px;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .mobile-menu .nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  @media (max-width: 768px) {
+    .nav-list {
+      display: none;
+    }
+  
+    .hamburger-menu {
+      display: block;
+    }
   }
   

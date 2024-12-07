@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Logout.css'; // Ensure to create a corresponding CSS file for styling
+import './Logout.css';
 
-const Logout = ({ setIsAuthenticated, setIsAdmin }) => {
+const Logout = ({ setIsAuthenticated, setIsAdmin, setIsVerified }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,9 +10,10 @@ const Logout = ({ setIsAuthenticated, setIsAdmin }) => {
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
 
-    // Update the authentication and admin states
+    // Update the authentication, admin, and verification states
     setIsAuthenticated(false);
     setIsAdmin(false);
+    setIsVerified(false);  // Explicitly set isVerified to false
 
     // Redirect to the login page
     navigate('/login');
