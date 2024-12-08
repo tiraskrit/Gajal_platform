@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './PoemCard.css';
 
 const typeColors = {
@@ -39,17 +40,24 @@ const PoemCard = ({ title, content, author, contentType }) => {
     return previewText.trim() + ellipsis;
   };
 
+  const handleClick = (e) => {
+    // Don't expand if the click originated from the content-type-badge
+    if (!e.target.closest('.content-type-badge')) {
+      setIsExpanded(!isExpanded);
+    }
+  };
+
   return (
     <div 
       className={`poem-card ${isExpanded ? 'expanded' : ''}`}
-      onClick={() => setIsExpanded(!isExpanded)}
+      onClick={handleClick}
     >
       <div className="poem-inner">
         <span 
           className="content-type-badge"
           style={{ backgroundColor: typeColors[contentType] }}
         >
-          {contentType}
+          <Link to={`/?type=${contentType}`} className="nav-link">{contentType}</Link>
         </span>
         <h3 className="poem-title">{title}</h3>
         <div className="poem-content">
