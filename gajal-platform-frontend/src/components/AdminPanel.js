@@ -33,7 +33,7 @@ const AdminPanel = () => {
       });
       setPendingPoems((prev) => prev.filter((poem) => poem._id !== poemId));
     } catch (err) {
-      setError("Failed to update poem status");
+      setError("Failed to update content status");
     }
   };
 

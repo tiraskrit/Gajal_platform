@@ -42,7 +42,7 @@ export default function PoemList() {
     return (
       <div className="error-container">
         <div className="error-message">
-          <h2>Welcome to Our Poetry Collection</h2>
+          <h2>Welcome to Our Nepali literature Collection</h2>
           <p>{error}</p>
           <div className="auth-buttons">
             <button onClick={() => window.location.href = '/login'} className="login-button">Login</button>

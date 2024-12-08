@@ -67,7 +67,7 @@ def submit_poem():
     if not title or not content:
         return jsonify({"error": "Title and content are required"}), 400
 
-    # Insert the poem with status as "pending" for admin approval
+    # Insert the content with status as "pending" for admin approval
     mongo.db.poems.insert_one({
         "title": title,
         "content": content,
@@ -76,7 +76,7 @@ def submit_poem():
         "status": status          # Status for new poems
     })
 
-    return jsonify({"message": "Poem submitted successfully. Awaiting approval."}), 201
+    return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
 
 def admin_required(fn):
     @wraps(fn)
@@ -110,9 +110,9 @@ def review_poem(poem_id):
     result = poems_collection.update_one({"_id": ObjectId(poem_id)}, {"$set": {"status": new_status}})
     
     if result.modified_count > 0:
-        return jsonify({"message": f"Poem {action}d successfully"}), 200
+        return jsonify({"message": f"Content {action}d successfully"}), 200
     else:
-        return jsonify({"error": "Poem not found or already reviewed"}), 404
+        return jsonify({"error": "Content not found or already reviewed"}), 404
 
 @app.route('/ping', methods=['GET'])
 def ping():
