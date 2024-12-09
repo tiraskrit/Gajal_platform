@@ -42,7 +42,7 @@ def get_poems():
     poems = mongo.db.poems.find({"status": "approved"})
     
     # Format poems for response
-    poem_list = [{"title": poem["title"], "content": poem["content"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
+    poem_list = [{"title": poem["title"], "content": poem["content"], "author": poem["author"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
     
     return jsonify(poem_list), 200
 
@@ -66,14 +66,21 @@ def submit_poem():
     # Validate the title and content
     if not title or not content:
         return jsonify({"error": "Title and content are required"}), 400
+    
+    # Retrieve the user's first name and last name from the database
+    user = mongo.db.users.find_one({"email": author_id})
+    first_name = user.get('first_name', 'Unknown')
+    last_name = user.get('last_name', 'Unknown')
 
     # Insert the content with status as "pending" for admin approval
     mongo.db.poems.insert_one({
         "title": title,
         "content": content,
         "content_type":content_type,
+        "author": f"{first_name}, {last_name}",
         "author_id": author_id,  # Using the author's email from JWT
-        "status": status          # Status for new poems
+        "status": status,          # Status for new poems
+        "created_at": datetime.datetime.now(datetime.UTC)
     })
 
     return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
@@ -118,7 +125,7 @@ def review_poem(poem_id):
 def ping():
     return jsonify({
         "status": "alive",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.datetime.now(datetime.UTC).isoformat()
     }), 200
 
 if __name__ == '__main__':

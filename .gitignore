@@ -5,5 +5,7 @@ gajal-platform-frontend/package-lock.json
 
 gajal-platform/.env
 gajal-platform/__pycache__/
+gajal-platform/test.py
+
 
 test.py

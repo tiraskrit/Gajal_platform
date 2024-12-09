@@ -60,7 +60,7 @@ export default function PoemList() {
           key={poem.title}
           title={poem.title}
           content={poem.content}
-          author={poem.author_id}
+          author={poem.author}
           contentType={poem.content_type}
         />
       )) : <div>No content available.</div>}
