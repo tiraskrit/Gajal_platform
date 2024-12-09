@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 from extensions import mongo, jwt  # Import extensions
 import config
@@ -80,7 +80,7 @@ def submit_poem():
         "author": f"{first_name}, {last_name}",
         "author_id": author_id,  # Using the author's email from JWT
         "status": status,          # Status for new poems
-        "created_at": datetime.datetime.now(datetime.UTC)
+        "created_at": datetime.now(timezone.utc)
     })
 
     return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
@@ -125,7 +125,7 @@ def review_poem(poem_id):
 def ping():
     return jsonify({
         "status": "alive",
-        "timestamp": datetime.datetime.now(datetime.UTC).isoformat()
+        "timestamp": datetime.now(timezone.utc).isoformat()
     }), 200
 
 if __name__ == '__main__':

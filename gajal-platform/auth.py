@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from extensions import mongo
 from flask_jwt_extended import create_access_token
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from bson.objectid import ObjectId
 from email_service import EmailService
 import re
@@ -58,7 +58,7 @@ def forgot_password():
     
     # Generate reset token
     reset_token = secrets.token_urlsafe(32)
-    expiry = datetime.utcnow() + timedelta(hours=24)
+    expiry = datetime.now(timezone.utc)+ timedelta(hours=24)
     
     # Store reset token in database
     mongo.db.users.update_one(
@@ -89,7 +89,7 @@ def reset_password():
     
     user = mongo.db.users.find_one({
         "reset_token": token,
-        "reset_token_expires": {"$gt": datetime.utcnow()}
+        "reset_token_expires": {"$gt": datetime.now(timezone.utc)}
     })
     
     if not user:
@@ -138,7 +138,7 @@ def signup():
 
     # Generate verification token
     verification_token = secrets.token_urlsafe(32)
-    token_expiry = datetime.utcnow() + timedelta(hours=24)
+    token_expiry = datetime.now(timezone.utc)+ timedelta(hours=24)
 
     # Create user with verification token
     hashed_password = generate_password_hash(password)
@@ -152,8 +152,8 @@ def signup():
         "is_verified": False,
         "verification_token": verification_token,
         "verification_token_expires": token_expiry,
-        "created_at": datetime.utcnow(),
-        "updated_at": datetime.utcnow()
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc)
     }
 
     try:
@@ -187,7 +187,7 @@ def verify_email():
 
     user = mongo.db.users.find_one({
         "verification_token": token,
-        "verification_token_expires": {"$gt": datetime.utcnow()},
+        "verification_token_expires": {"$gt": datetime.now(timezone.utc)},
         "is_verified": False
     })
 
