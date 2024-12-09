@@ -39,7 +39,7 @@ const AdminPanel = () => {
 
   return (
     <div className="admin-panel">
-      <h2 className="title">Pending Poem Approvals</h2>
+      <h2 className="title">Pending Content Approvals</h2>
       {loading ? (
         <div className="loading">Loading...</div>
       ) : error ? (
@@ -68,7 +68,7 @@ const AdminPanel = () => {
           ))}
         </div>
       ) : (
-        <p className='text-no-pending'>Hurra! No pending poems at the moment.</p>
+        <p className='text-no-pending'>Hurra! No pending contents at the moment.</p>
       )}
     </div>
   );

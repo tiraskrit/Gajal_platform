@@ -7,6 +7,7 @@ import secrets
 from datetime import datetime, timedelta
 from bson.objectid import ObjectId
 from email_service import EmailService
+import re
 
 
 auth_bp = Blueprint('auth_bp', __name__)
@@ -111,10 +112,29 @@ def signup():
     data = request.get_json()
     email = data['email']
     password = data['password']
+    first_name = data['firstName']
+    last_name = data['lastName']
+    gender = data['gender']
     role = data.get('role', 'user')
 
+    # Validate required fields
+    required_fields = ['email', 'password', 'firstName', 'lastName', 'gender']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({"error": f"{field} is required"}), 400
+
+    # Validate email format
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return jsonify({"error": "Invalid email format"}), 400
+
+    # Check if user already exists
     if mongo.db.users.find_one({"email": email}):
         return jsonify({"error": "User already exists"}), 400
+
+    # Validate gender
+    valid_genders = ['male', 'female', 'other']
+    if gender.lower() not in valid_genders:
+        return jsonify({"error": "Invalid gender selection"}), 400
 
     # Generate verification token
     verification_token = secrets.token_urlsafe(32)
@@ -122,24 +142,41 @@ def signup():
 
     # Create user with verification token
     hashed_password = generate_password_hash(password)
-    mongo.db.users.insert_one({
+    new_user = {
         "email": email,
         "password": hashed_password,
+        "first_name": first_name,
+        "last_name": last_name,
+        "gender": gender.lower(),
         "role": role,
         "is_verified": False,
         "verification_token": verification_token,
-        "verification_token_expires": token_expiry
-    })
+        "verification_token_expires": token_expiry,
+        "created_at": datetime.utcnow(),
+        "updated_at": datetime.utcnow()
+    }
 
-    # Send verification email
-    if email_service.send_verification_email(email, verification_token):
+    try:
+        # Insert the new user
+        mongo.db.users.insert_one(new_user)
+
+        # Send verification email
+        if email_service.send_verification_email(email, verification_token):
+            return jsonify({
+                "message": "User created successfully. Please check your email to verify your account."
+            }), 201
+        else:
+            # If email fails, still create the user but return a different message
+            return jsonify({
+                "message": "User created successfully, but verification email could not be sent. Please contact support."
+            }), 201
+
+    except Exception as e:
+        # Log the error for debugging
+        print(f"Error creating user: {str(e)}")
         return jsonify({
-            "message": "User created successfully. Please check your email to verify your account."
-        }), 201
-    else:
-        return jsonify({
-            "message": "User created successfully, but verification email could not be sent. Please contact support."
-        }), 201
+            "error": "An error occurred while creating your account. Please try again."
+        }), 500
     
 @auth_bp.route('/api/verify-email', methods=['POST'])
 def verify_email():
