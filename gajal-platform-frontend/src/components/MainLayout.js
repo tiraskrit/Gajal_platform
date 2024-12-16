@@ -46,14 +46,16 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
         </h1>
         <nav className="nav">
           <ul className="nav-list">
-            <li className="nav-item dropdown">
-              <span className="nav-link">Content</span>
-              <div className="dropdown-content">
-                {contentTypes.map((type) => (
-                  <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
-                ))}
-              </div>
-            </li>
+            {isVerified && (
+              <li className="nav-item dropdown">
+                <span className="nav-link">Content</span>
+                <div className="dropdown-content">
+                  {contentTypes.map((type) => (
+                    <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
+                  ))}
+                </div>
+              </li>
+            )}
             {isAuthenticated ? (
               <li className="nav-item my-profile">
                 <span className="nav-link">My Profile</span>
@@ -89,14 +91,16 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
         {menuOpen && (
           <div className="mobile-menu" ref={menuRef}>
             <ul className="nav-list">
-              <li className={`nav-item dropdown ${expandedItems.content ? 'expanded' : ''}`}>
-                <span className="nav-link" onClick={() => toggleDropdown('content')}>Content</span>
-                <div className="dropdown-content">
-                  {contentTypes.map((type) => (
-                    <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
-                  ))}
-                </div>
-              </li>
+              {isVerified && (
+                <li className={`nav-item dropdown ${expandedItems.content ? 'expanded' : ''}`}>
+                  <span className="nav-link" onClick={() => toggleDropdown('content')}>Content</span>
+                  <div className="dropdown-content">
+                    {contentTypes.map((type) => (
+                      <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
+                    ))}
+                  </div>
+                </li>
+              )}
               {isAuthenticated ? (
                 <li className={`nav-item my-profile ${expandedItems.profile ? 'expanded' : ''}`}>
                   <span className="nav-link" onClick={() => toggleDropdown('profile')}>My Profile</span>
