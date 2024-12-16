@@ -12,14 +12,22 @@ const typeColors = {
   Other: '#95a5a6'
 };
 
-const PoemCard = ({ title, content, author, contentType, id, likes, liked_by }) => {
+const PoemCard = ({ title, content, author, contentType, id, likes, liked_by, author_id }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [currentLikes, setCurrentLikes] = useState(likes);
+  const [isAuthor, setIsAuthor] = useState(false);
 
   // Get the current user's email (or unique identifier) from the JWT token
   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
   const currentUserEmail = token ? jwtDecode(token).sub : null;
+
+  // Check if the current user is the author of the poem
+  useEffect(() => {
+    if (currentUserEmail && currentUserEmail === author_id) {
+      setIsAuthor(true);
+    }
+  }, [currentUserEmail, author_id]);
 
   // Check if the current user has liked the poem when the component mounts
   useEffect(() => {
@@ -56,7 +64,7 @@ const PoemCard = ({ title, content, author, contentType, id, likes, liked_by }) 
   };
 
   const handleClick = (e) => {
-    if (!e.target.closest('.content-type-badge') && !e.target.closest('.like-button')) {
+    if (!e.target.closest('.content-type-badge') && !e.target.closest('.like-button') && !e.target.closest('.delete-button')) {
       setIsExpanded(!isExpanded);
     }
   };
@@ -91,6 +99,33 @@ const PoemCard = ({ title, content, author, contentType, id, likes, liked_by }) 
       })
       .catch((err) => {
         console.error('Error liking poem:', err);
+      });
+  };
+
+  const handleDelete = () => {
+    if (!token) {
+      alert('You need to log in to delete this poem.');
+      return;
+    }
+
+    fetch(`${API_URL}/api/poems/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === 'Poem deleted successfully') {
+          alert('Poem deleted successfully');
+          window.location.reload(); // Reload the page to reflect the deletion
+        } else {
+          alert('Failed to delete poem');
+        }
+      })
+      .catch((err) => {
+        console.error('Error deleting poem:', err);
       });
   };
 
@@ -135,6 +170,17 @@ const PoemCard = ({ title, content, author, contentType, id, likes, liked_by }) 
           >
             <span role="img" aria-label="like">👍</span> {currentLikes}
           </button>
+          {isAuthor && (
+            <button
+              className="delete-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+            >
+              <span role="img" aria-label="delete">🗑️</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

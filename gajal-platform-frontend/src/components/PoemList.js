@@ -65,6 +65,7 @@ export default function PoemList() {
           id={poem.id}
           likes={poem.likes}
           liked_by={poem.liked_by || []}
+          author_id={poem.author_id}
         />
       )) : <div>No content available.</div>}
     </div>

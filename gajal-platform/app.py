@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 from extensions import mongo, jwt  # Import extensions
 import config
 from auth import auth_bp  # Import the authentication blueprint
@@ -28,6 +28,16 @@ poems_collection = mongo.db.poems
 
 # Register Blueprints
 app.register_blueprint(auth_bp)
+
+# Handle preflight requests for all routes
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = make_response()
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+        return response
 
 # Add a default route for testing
 @app.route('/')
@@ -93,7 +103,6 @@ def submit_poem():
 
     return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
 
-# Route to like/unlike a poem
 @app.route('/api/poems/<poem_id>/like', methods=['POST'])
 @jwt_required()
 def like_poem(poem_id):
@@ -118,6 +127,31 @@ def like_poem(poem_id):
             {"$inc": {"likes": 1}, "$push": {"liked_by": user_id}}
         )
         return jsonify({"message": "Poem liked"}), 200
+
+@app.route('/api/poems/<poem_id>', methods=['DELETE'])
+@jwt_required()
+def delete_poem(poem_id):
+    user_id = get_jwt_identity()
+    poem = mongo.db.poems.find_one({"_id": ObjectId(poem_id)})
+
+    if not poem:
+        return jsonify({"error": "Poem not found"}), 404
+
+    # Check if the user is the author of the poem
+    if poem.get("author_id") != user_id:
+        return jsonify({"error": "You are not authorized to delete this poem"}), 403
+
+    # Delete the poem
+    result = mongo.db.poems.delete_one({"_id": ObjectId(poem_id)})
+
+    if result.deleted_count > 0:
+        response = jsonify({"message": "Poem deleted successfully"})
+        response.headers.add("Access-Control-Allow-Origin", "*")  # Add CORS header
+        return response, 200
+    else:
+        response = jsonify({"error": "Failed to delete poem"})
+        response.headers.add("Access-Control-Allow-Origin", "*")  # Add CORS header
+        return response, 500
 
 def admin_required(fn):
     @wraps(fn)

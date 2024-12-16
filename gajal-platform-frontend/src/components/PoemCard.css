@@ -105,20 +105,35 @@
     position: absolute;
     bottom: -10px;
     left: 10px;
+    display: flex;
+    align-items: center;
   }
   
-  .like-button {
+  .like-button, .delete-button {
     background-color: #f1c40f;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 5px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
   }
   
   .like-button.liked {
     background-color: green;
   }
   
-  .like-button:hover {
+  .like-button:hover, .delete-button:hover {
     color: var(--primary-color, #2c3e50);
+  }
+  
+  .poem-card:hover .like-button, .poem-card:hover .delete-button {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .delete-button {
+    background-color: #e74c3c;
   }
