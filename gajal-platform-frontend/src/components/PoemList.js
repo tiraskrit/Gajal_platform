@@ -57,7 +57,7 @@ export default function PoemList() {
     <div className="poem-list">
       {Array.isArray(poems) ? poems.map((poem) => (
         <PoemCard
-          key={poem.title}
+          key={poem.id}
           title={poem.title}
           content={poem.content}
           author={poem.author}

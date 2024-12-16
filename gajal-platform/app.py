@@ -42,7 +42,7 @@ def get_poems():
     poems = mongo.db.poems.find({"status": "approved"})
     
     # Format poems for response
-    poem_list = [{"title": poem["title"], "content": poem["content"], "author": poem["author"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
+    poem_list = [{"id": str(poem["_id"]),"title": poem["title"], "content": poem["content"], "author": poem["author"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
     
     return jsonify(poem_list), 200
 
