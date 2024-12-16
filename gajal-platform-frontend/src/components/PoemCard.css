@@ -47,6 +47,7 @@
   
   .poem-inner {
     padding: 1.5rem;
+    position: relative
   }
   
   .poem-title {
@@ -137,3 +138,23 @@
   .delete-button {
     background-color: #e74c3c;
   }
+
+  /* Adjust for mobile devices */
+@media (max-width: 767px) {
+  .like-button, .delete-button {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .like-container {
+    position: static;
+    margin-top: 10px;
+  }
+}
+
+/* Specific style for expanded cards */
+.poem-card.expanded .like-container {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
