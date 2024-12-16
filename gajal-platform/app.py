@@ -42,7 +42,14 @@ def get_poems():
     poems = mongo.db.poems.find({"status": "approved"})
     
     # Format poems for response
-    poem_list = [{"id": str(poem["_id"]),"title": poem["title"], "content": poem["content"], "author": poem["author"], "author_id": poem["author_id"], "content_type": poem["content_type"] } for poem in poems]
+    poem_list = [{"id": str(poem["_id"]),
+                  "title": poem["title"], 
+                  "content": poem["content"], 
+                  "author": poem["author"], 
+                  "author_id": poem["author_id"], 
+                  "content_type": poem["content_type"], 
+                  "liked_by": poem["liked_by"],
+                  "likes": poem["likes"] } for poem in poems]
     
     return jsonify(poem_list), 200
 
@@ -80,10 +87,37 @@ def submit_poem():
         "author": f"{first_name}, {last_name}",
         "author_id": author_id,  # Using the author's email from JWT
         "status": status,          # Status for new poems
-        "created_at": datetime.now(timezone.utc)
+        "created_at": datetime.now(timezone.utc),
+        "likes":0
     })
 
     return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
+
+# Route to like/unlike a poem
+@app.route('/api/poems/<poem_id>/like', methods=['POST'])
+@jwt_required()
+def like_poem(poem_id):
+    user_id = get_jwt_identity()
+    poem = mongo.db.poems.find_one({"_id": ObjectId(poem_id)})
+
+    if not poem:
+        return jsonify({"error": "Poem not found"}), 404
+
+    # Check if the user has already liked the poem
+    if user_id in poem.get("liked_by", []):
+        # Unlike the poem
+        mongo.db.poems.update_one(
+            {"_id": ObjectId(poem_id)},
+            {"$inc": {"likes": -1}, "$pull": {"liked_by": user_id}}
+        )
+        return jsonify({"message": "Poem unliked"}), 200
+    else:
+        # Like the poem
+        mongo.db.poems.update_one(
+            {"_id": ObjectId(poem_id)},
+            {"$inc": {"likes": 1}, "$push": {"liked_by": user_id}}
+        )
+        return jsonify({"message": "Poem liked"}), 200
 
 def admin_required(fn):
     @wraps(fn)

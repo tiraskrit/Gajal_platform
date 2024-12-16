@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './PoemCard.css';
+import { API_URL } from '../api.js';
+import { jwtDecode } from 'jwt-decode';
 
 const typeColors = {
   Poem: '#4a90e2',
@@ -10,30 +12,43 @@ const typeColors = {
   Other: '#95a5a6'
 };
 
-const PoemCard = ({ title, content, author, contentType }) => {
+const PoemCard = ({ title, content, author, contentType, id, likes, liked_by }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [currentLikes, setCurrentLikes] = useState(likes);
+
+  // Get the current user's email (or unique identifier) from the JWT token
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  const currentUserEmail = token ? jwtDecode(token).sub : null;
+
+  // Check if the current user has liked the poem when the component mounts
+  useEffect(() => {
+    if (currentUserEmail && liked_by.includes(currentUserEmail)) {
+      setIsLiked(true);
+    }
+  }, [currentUserEmail, liked_by]);
 
   const createPreview = (text) => {
-    const lines = text.split('\n').slice(0, 4);
+    const lines = text.split('\n').slice(0, 5);
     let wordCount = 0;
     let previewText = '';
 
     for (let line of lines) {
-        const words = line.split(/\s+/);
-        for (let word of words) {
-            if (wordCount >= 25) {
-                break;
-            }
-            if (previewText) {
-                previewText += ' ';
-            }
-            previewText += word;
-            wordCount++;
-        }
+      const words = line.split(/\s+/);
+      for (let word of words) {
         if (wordCount >= 25) {
-            break;
+          break;
         }
-        previewText += '\n';
+        if (previewText) {
+          previewText += ' ';
+        }
+        previewText += word;
+        wordCount++;
+      }
+      if (wordCount >= 25) {
+        break;
+      }
+      previewText += '\n';
     }
 
     const ellipsis = text.split(/\s+/).length > 25 ? '...' : '';
@@ -41,19 +56,51 @@ const PoemCard = ({ title, content, author, contentType }) => {
   };
 
   const handleClick = (e) => {
-    // Don't expand if the click originated from the content-type-badge
-    if (!e.target.closest('.content-type-badge')) {
+    if (!e.target.closest('.content-type-badge') && !e.target.closest('.like-button')) {
       setIsExpanded(!isExpanded);
     }
   };
 
+  const handleLike = () => {
+    if (!token) {
+      alert('You need to log in to like this poem.');
+      return;
+    }
+
+    fetch(`${API_URL}/api/poems/${id}/like`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message === 'Poem liked') {
+          setIsLiked(true);
+          setCurrentLikes(currentLikes + 1); // Update likes count
+          liked_by.push(currentUserEmail); // Update liked_by array locally
+        } else if (data.message === 'Poem unliked') {
+          setIsLiked(false);
+          setCurrentLikes(currentLikes - 1); // Update likes count
+          const index = liked_by.indexOf(currentUserEmail);
+          if (index > -1) {
+            liked_by.splice(index, 1); // Update liked_by array locally
+          }
+        }
+      })
+      .catch((err) => {
+        console.error('Error liking poem:', err);
+      });
+  };
+
   return (
-    <div 
+    <div
       className={`poem-card ${isExpanded ? 'expanded' : ''}`}
       onClick={handleClick}
     >
       <div className="poem-inner">
-        <span 
+        <span
           className="content-type-badge"
           style={{ backgroundColor: typeColors[contentType] }}
         >
@@ -78,6 +125,17 @@ const PoemCard = ({ title, content, author, contentType }) => {
           )}
         </div>
         <p className="poem-author">- {author}</p>
+        <div className="like-container">
+          <button
+            className={`like-button ${isLiked ? 'liked' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLike();
+            }}
+          >
+            <span role="img" aria-label="like">👍</span> {currentLikes}
+          </button>
+        </div>
       </div>
     </div>
   );

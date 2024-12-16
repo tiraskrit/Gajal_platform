@@ -34,6 +34,7 @@
     cursor: pointer;
     height: 300px;
     overflow: hidden;
+    position: relative
   }
   
   .poem-card.expanded {
@@ -98,4 +99,26 @@
   
   .poem-inner {
     position: relative;
+  }
+
+  .like-container {
+    position: absolute;
+    bottom: -10px;
+    left: 10px;
+  }
+  
+  .like-button {
+    background-color: #f1c40f;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .like-button.liked {
+    background-color: green;
+  }
+  
+  .like-button:hover {
+    color: var(--primary-color, #2c3e50);
   }
