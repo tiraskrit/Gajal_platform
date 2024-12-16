@@ -4,6 +4,10 @@ import './MainLayout.css';
 
 const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [expandedItems, setExpandedItems] = useState({
+    content: false,
+    profile: false
+  });
   const menuRef = useRef(null);
   const contentTypes = isVerified ? ['Poem', 'Story', 'Gajal', 'Nibandha', 'Other'] : [];
 
@@ -12,6 +16,7 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
+        setExpandedItems({ content: false, profile: false });
       }
     };
 
@@ -19,9 +24,18 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Handle link click to close menu
+  // Handle link click to close menu and reset expansions
   const handleLinkClick = () => {
     setMenuOpen(false);
+    setExpandedItems({ content: false, profile: false });
+  };
+
+  // Toggle dropdown items in mobile view
+  const toggleDropdown = (item) => {
+    setExpandedItems(prev => ({
+      ...prev,
+      [item]: !prev[item]
+    }));
   };
 
   return (
@@ -32,34 +46,34 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
         </h1>
         <nav className="nav">
           <ul className="nav-list">
-            {contentTypes.map((type) => (
-              <li className="nav-item" key={type}>
-                <Link to={`/?type=${type}`} className="nav-link">{type}</Link>
-              </li>
-            ))}
+            <li className="nav-item dropdown">
+              <span className="nav-link">Content</span>
+              <div className="dropdown-content">
+                {contentTypes.map((type) => (
+                  <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
+                ))}
+              </div>
+            </li>
             {isAuthenticated ? (
-              <>
-                {isVerified && (
-                  <li className="nav-item">
-                    <Link to="/submitPoem" className="nav-link">Submit a Content</Link>
-                  </li>
-                )}
-                <li className="nav-item">
-                  <Link to="/logout" className="nav-link">Logout</Link>
-                </li>
-                {isAdmin && (
-                  <li className="nav-item">
-                    <Link to="/admin" className="nav-link">Admin Panel</Link>
-                  </li>
-                )}
-              </>
+              <li className="nav-item my-profile">
+                <span className="nav-link">My Profile</span>
+                <div className="my-profile-content">
+                  {isVerified && (
+                    <Link to="/submitPoem" className="nav-link" onClick={handleLinkClick}>Submit a Content</Link>
+                  )}
+                  <Link to="/logout" className="nav-link" onClick={handleLinkClick}>Logout</Link>
+                  {isAdmin && (
+                    <Link to="/admin" className="nav-link" onClick={handleLinkClick}>Admin Panel</Link>
+                  )}
+                </div>
+              </li>
             ) : (
               <>
                 <li className="nav-item">
-                  <Link to="/login" className="nav-link">Login</Link>
+                  <Link to="/login" className="nav-link" onClick={handleLinkClick}>Login</Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="/signup" className="nav-link">Sign Up</Link>
+                  <Link to="/signup" className="nav-link" onClick={handleLinkClick}>Sign Up</Link>
                 </li>
               </>
             )}
@@ -75,27 +89,27 @@ const MainLayout = ({ isAuthenticated, isAdmin, isVerified }) => {
         {menuOpen && (
           <div className="mobile-menu" ref={menuRef}>
             <ul className="nav-list">
-              {contentTypes.map((type) => (
-                <li className="nav-item" key={type}>
-                  <Link to={`/?type=${type}`} className="nav-link" onClick={handleLinkClick}>{type}</Link>
-                </li>
-              ))}
+              <li className={`nav-item dropdown ${expandedItems.content ? 'expanded' : ''}`}>
+                <span className="nav-link" onClick={() => toggleDropdown('content')}>Content</span>
+                <div className="dropdown-content">
+                  {contentTypes.map((type) => (
+                    <Link to={`/?type=${type}`} className="nav-link" key={type} onClick={handleLinkClick}>{type}</Link>
+                  ))}
+                </div>
+              </li>
               {isAuthenticated ? (
-                <>
-                  {isVerified && (
-                    <li className="nav-item">
+                <li className={`nav-item my-profile ${expandedItems.profile ? 'expanded' : ''}`}>
+                  <span className="nav-link" onClick={() => toggleDropdown('profile')}>My Profile</span>
+                  <div className="my-profile-content">
+                    {isVerified && (
                       <Link to="/submitPoem" className="nav-link" onClick={handleLinkClick}>Submit a Content</Link>
-                    </li>
-                  )}
-                  <li className="nav-item">
+                    )}
                     <Link to="/logout" className="nav-link" onClick={handleLinkClick}>Logout</Link>
-                  </li>
-                  {isAdmin && (
-                    <li className="nav-item">
+                    {isAdmin && (
                       <Link to="/admin" className="nav-link" onClick={handleLinkClick}>Admin Panel</Link>
-                    </li>
-                  )}
-                </>
+                    )}
+                  </div>
+                </li>
               ) : (
                 <>
                   <li className="nav-item">

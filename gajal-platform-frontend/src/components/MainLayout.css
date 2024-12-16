@@ -118,4 +118,126 @@
   .hamburger-menu {
     display: block;
   }
+  
+  .mobile-menu .dropdown-content,
+  .mobile-menu .my-profile-content {
+    display: none;
+    position: static;
+    background: none;
+    box-shadow: none;
+    padding-left: 20px;
+  }
+
+  .mobile-menu .dropdown.expanded .dropdown-content,
+  .mobile-menu .my-profile.expanded .my-profile-content {
+    display: block;
+  }
+
+  .mobile-menu .nav-link {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  top: calc(100% + 20px); 
+}
+
+
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -20px;  
+  left: 0;
+  right: 0;
+  height: 20px; 
+}
+
+.dropdown-content .nav-link {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+}
+
+.dropdown-content .nav-link:hover {
+  background-color: #f0f7ff;
+}
+
+@media (min-width: 769px) {
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+.my-profile {
+  position: relative;
+  display: inline-block;
+}
+
+.my-profile-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  top: calc(100% + 20px);
+  right: 0; 
+  left: auto; 
+  transform: translateX(0); 
+  max-width: calc(100vw - 40px); 
+  width: max-content; 
+}
+
+.my-profile-content::before {
+  content: '';
+  position: absolute;
+  top: -20px;  
+  left: 0;
+  right: 0;
+  height: 20px;
+}
+
+.my-profile-content .nav-link {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.2s ease;
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+
+@media (max-width: 320px) {
+  .my-profile-content {
+    width: calc(100vw - 40px); 
+    right: -20px; 
+  }
+}
+
+.my-profile-content .nav-link:hover {
+  background-color: #f0f7ff;
+}
+
+@media (min-width: 769px) {
+  .my-profile:hover .my-profile-content {
+    display: block;
+  }
 }
