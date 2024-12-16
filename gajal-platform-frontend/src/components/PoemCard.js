@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import './PoemCard.css';
 import { API_URL } from '../api.js';
 import { jwtDecode } from 'jwt-decode';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const typeColors = {
   Poem: '#4a90e2',
@@ -108,25 +110,40 @@ const PoemCard = ({ title, content, author, contentType, id, likes, liked_by, au
       return;
     }
 
-    fetch(`${API_URL}/api/poems/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message === 'Poem deleted successfully') {
-          alert('Poem deleted successfully');
-          window.location.reload(); // Reload the page to reflect the deletion
-        } else {
-          alert('Failed to delete poem');
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Are you sure you want to delete this poem?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => {
+            fetch(`${API_URL}/api/poems/${id}`, {
+              method: 'DELETE',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                if (data.message === 'Poem deleted successfully') {
+                  alert('Poem deleted successfully');
+                  window.location.reload(); // Reload the page to reflect the deletion
+                } else {
+                  alert('Failed to delete poem');
+                }
+              })
+              .catch((err) => {
+                console.error('Error deleting poem:', err);
+              });
+          }
+        },
+        {
+          label: 'No',
+          onClick: () => {}
         }
-      })
-      .catch((err) => {
-        console.error('Error deleting poem:', err);
-      });
+      ]
+    });
   };
 
   return (

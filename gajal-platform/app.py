@@ -36,7 +36,7 @@ def handle_preflight():
         response = make_response()
         response.headers.add("Access-Control-Allow-Origin", "*")
         response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
-        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+        response.headers.add("Access-Control-Allow-Methods", "GET,PUT,PATCH,POST,DELETE,OPTIONS")
         return response
 
 # Add a default route for testing
@@ -98,7 +98,8 @@ def submit_poem():
         "author_id": author_id,  # Using the author's email from JWT
         "status": status,          # Status for new poems
         "created_at": datetime.now(timezone.utc),
-        "likes":0
+        "likes":0,
+        "liked_by":[]
     })
 
     return jsonify({"message": "Content submitted successfully. Awaiting approval."}), 201
