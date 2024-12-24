@@ -27,10 +27,11 @@ export default function PoemList() {
         return response.json();
       })
       .then((data) => {
+        const sortedData = data.sort((a, b) => (b.likes || 0) - (a.likes || 0));
         if (selectedType) {
-          setPoems(data.filter((poem) => poem.content_type === selectedType));
+          setPoems(sortedData.filter((poem) => poem.content_type === selectedType));
         } else {
-          setPoems(data);
+          setPoems(sortedData);
         }
       })
       .catch((err) => {
