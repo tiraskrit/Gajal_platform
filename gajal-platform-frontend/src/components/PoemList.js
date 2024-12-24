@@ -7,6 +7,7 @@ import { API_URL } from '../api.js';
 export default function PoemList() {
   const [poems, setPoems] = useState([]);
   const [error, setError] = useState(null);
+  const [sortBy, setSortBy] = useState('newest');
 
   const query = new URLSearchParams(useLocation().search);
   const selectedType = query.get('type');
@@ -27,7 +28,31 @@ export default function PoemList() {
         return response.json();
       })
       .then((data) => {
-        const sortedData = data.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+        let sortedData = [...data];
+        switch (sortBy) {
+          case 'likes':
+            sortedData.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+            break;
+          case 'newest':
+            sortedData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            break;
+          case 'trending':
+            // Calculate engagement ratio (likes per day)
+            sortedData.sort((a, b) => {
+              const aDays = (new Date() - new Date(a.created_at)) / (1000 * 60 * 60 * 24);
+              const bDays = (new Date() - new Date(b.created_at)) / (1000 * 60 * 60 * 24);
+              const aWeeks = aDays / 7; // Convert days to weeks
+              const bWeeks = bDays / 7; // Convert days to weeks
+              const aRatio = (a.likes || 0) / (aWeeks || 1);
+              const bRatio = (b.likes || 0) / (bWeeks || 1);
+              return bRatio - aRatio;
+            });
+            break;
+          default:
+            sortedData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            break;
+        }
+
         if (selectedType) {
           setPoems(sortedData.filter((poem) => poem.content_type === selectedType));
         } else {
@@ -37,7 +62,7 @@ export default function PoemList() {
       .catch((err) => {
         setError(err.message);
       });
-  }, [selectedType]);
+  }, [selectedType, sortBy]);
 
   if (error) {
     return (
@@ -55,20 +80,33 @@ export default function PoemList() {
   }
 
   return (
-    <div className="poem-list">
-      {Array.isArray(poems) ? poems.map((poem) => (
-        <PoemCard
-          key={poem.id}
-          title={poem.title}
-          content={poem.content}
-          author={poem.author}
-          contentType={poem.content_type}
-          id={poem.id}
-          likes={poem.likes}
-          liked_by={poem.liked_by || []}
-          author_id={poem.author_id}
-        />
-      )) : <div>No content available.</div>}
-    </div>
+    <>
+      <div className="sort-controls">
+        <select 
+          value={sortBy} 
+          onChange={(e) => setSortBy(e.target.value)}
+          className="sort-select"
+        >
+          <option value="newest">Newest First</option>
+          <option value="likes">Most Liked</option>
+          <option value="trending">Trending</option>
+        </select>
+      </div>
+      <div className="poem-list">
+        {Array.isArray(poems) ? poems.map((poem) => (
+          <PoemCard
+            key={poem.id}
+            title={poem.title}
+            content={poem.content}
+            author={poem.author}
+            contentType={poem.content_type}
+            id={poem.id}
+            likes={poem.likes}
+            liked_by={poem.liked_by || []}
+            author_id={poem.author_id}
+          />
+        )) : <div>No content available.</div>}
+      </div>
+    </>
   );
 }
