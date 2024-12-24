@@ -165,6 +165,20 @@
   text-align: right;
 }
 
+/* Media query for tablets (e.g., portrait tablets) */
+@media (max-width: 768px) {
+  .sort-controls {
+    margin-right: 1.7rem;
+  }
+}
+
+/* Media query for mobile devices (e.g., portrait phones) */
+@media (max-width: 480px) {
+  .sort-controls {
+    margin-right: 1.7rem;
+  }
+}
+
 .sort-select {
   padding: 0.5rem;
   border-radius: 4px;
