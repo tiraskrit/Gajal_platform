@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send HTTP GET request
-        run: curl -fsSL ${{ secrets.APP_URL }}
+        run: curl -fsSL "${{ secrets.APP_URL }}"
